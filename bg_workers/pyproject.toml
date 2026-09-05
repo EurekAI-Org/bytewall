@@ -1,0 +1,25 @@
+[project]
+name = "workers"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "boto3>=1.43.66",
+    "celery>=5.6.3",
+    "clamav-client>=0.7.2",
+    "numpy>=2.5.1",
+    "pillow>=12.3.0",
+    "psycopg[binary,pool]>=3.3.4",
+    "pydantic>=2.13.4",
+    "pydantic-settings>=2.15.0",
+    "pymupdf>=1.28.2",
+    "python-dotenv>=1.2.2",
+    "python-json-logger>=4.1.0",
+    "redis[hiredis]>=8.1.0",
+    "shared",
+    "yara-python>=4.5.4",
+]
+
+[tool.uv.sources]
+shared = { path = "../shared", editable = true }
