@@ -7,3 +7,11 @@
 **/.ruff_cache
 **/.env
 **/.env.*
+
+
+**/*.pyc
+**/*.pyo
+**/*.log
+
+.DS_Store
+Thumbs.db
