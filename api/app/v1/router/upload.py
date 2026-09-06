@@ -7,13 +7,6 @@
 import uuid
 from typing import Annotated, Literal
 
-from fastapi import APIRouter, Depends, File, Form, Request, UploadFile, status
-from fastapi.responses import JSONResponse, StreamingResponse
-from redis.asyncio import Redis
-from shared.logger.logger import get_logger
-from shared.typed_dicts.params import FileMeta, ScanType
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.celery_modules.send_task import send_task
 from app.config.config import Settings
 from app.db.db import get_session
@@ -22,6 +15,12 @@ from app.services.file_validator import FileValidator
 from app.services.insert_save_file_record import insert_record
 from app.services.save_file import save_file
 from app.services.streams import stream_file_scan_status
+from fastapi import APIRouter, Depends, File, Form, Request, UploadFile, status
+from fastapi.responses import JSONResponse, StreamingResponse
+from redis.asyncio import Redis
+from shared.logger.logger import get_logger
+from shared.typed_dicts.params import FileMeta, ScanType
+from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(prefix="/upload", tags=["upload"])
 
@@ -41,7 +40,7 @@ async def upload_single_file(
         Literal["profile_pic", "note_img", "comment_img", "post_img", "attachment"],
         Form(),
     ],
-    session: AsyncSession = Depends(get_session),
+    session: Annotated[AsyncSession, Depends(get_session)],
 ):
     try:
         res = await validator.validate_file(file=file)
@@ -88,7 +87,6 @@ async def upload_single_file(
         # }
 
     except Exception:
-
         logger.exception("Failed to upload file")
         return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -105,7 +103,7 @@ async def get_scan_status(
     file_id: str,
     request: Request,
     user_id: uuid.UUID,
-    redis_client: Redis = Depends(get_redis),
+    redis_client: Annotated[Redis, Depends(get_redis)],
 ):
     return StreamingResponse(
         stream_file_scan_status(

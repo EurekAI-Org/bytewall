@@ -34,7 +34,7 @@ async def close_redis():
 
 
 def get_redis():
-    global redis
+    # global redis
     if redis is None:
         raise RuntimeError("Redis not initialized")
     return redis

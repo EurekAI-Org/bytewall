@@ -9,3 +9,11 @@ repos:
           - --author-name
           - "EurekAI Pvt. Ltd."
         types: [python]
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.6
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+
+      - id: ruff-format

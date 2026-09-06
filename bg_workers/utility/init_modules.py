@@ -11,9 +11,8 @@ import redis
 import sqlalchemy
 import yara
 from clamav_client.clamd import ClamdNetworkSocket
-from shared.logger.logger import get_logger
-
 from config import Settings
+from shared.logger.logger import get_logger
 
 _INIT: bool = False
 

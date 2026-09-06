@@ -4,5 +4,6 @@
 # SPDX-License-Identifier: MIT
 #
 
+
 def hello() -> str:
     return "Hello from shared!"

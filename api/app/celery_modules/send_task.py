@@ -16,9 +16,9 @@ def send_task(*, task_name: str, task_data: Any):
     """
     Sends tasks to celery app workers.
     """
-    assert task_name.startswith(
-        "tasks."
-    ), f"task_name should start with 'tasks.'. Received task_name={task_name}"
+    assert task_name.startswith("tasks."), (
+        f"task_name should start with 'tasks.'. Received task_name={task_name}"
+    )
 
     task_id = task_data.get("task_id", uuid.uuid4().hex)
     queue = TASK_QUEUES.get(task_name, {}).get("queue", "celery")

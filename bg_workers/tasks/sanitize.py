@@ -10,7 +10,6 @@ import uuid
 import numpy as np
 import pymupdf
 from PIL import Image, ImageOps
-
 from utility.exceptions import (
     PasswordProtectedPDF,
     UnsupportedExtension,

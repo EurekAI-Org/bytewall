@@ -17,7 +17,7 @@ from app.v1.router.upload import router as upload_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_redis()
-    r = get_redis()
+    get_redis()
 
     yield
 

@@ -8,14 +8,13 @@ import datetime
 import uuid
 from typing import Unpack
 
+import utility.init_modules as im
+from celery_app import celery_app
+from config import Settings
 from shared.logger.logger import get_logger
 from shared.redis_helpers.generate_keys import get_upload_channel
 from shared.typed_dicts.params import FileMeta, ScanType
 from sqlalchemy.exc import DBAPIError, OperationalError
-
-import utility.init_modules as im
-from celery_app import celery_app
-from config import Settings
 from tasks.sanitize import sanitize_file
 from tasks.scan_file import scan_file
 from utility.db_ops import (
@@ -65,7 +64,6 @@ def scan_uploaded_file(self, **data: Unpack[ScanType]):
     verdict = ""
     stage = "download"
     try:
-
         upsert_upload_job(
             engine=im.SQLENGINE,
             uploaded_file_id=uuid.UUID(data["id"]),
@@ -475,7 +473,6 @@ def scan_uploaded_file(self, **data: Unpack[ScanType]):
         raise self.retry(exc=exc, countdown=30)
 
     except Exception as exc:
-
         upsert_upload_job(
             engine=im.SQLENGINE,
             uploaded_file_id=uuid.UUID(data["id"]),
@@ -501,7 +498,6 @@ def scan_uploaded_file(self, **data: Unpack[ScanType]):
         raise
 
     finally:
-
         if sanitized_path is not None:
             sanitized_path.unlink(missing_ok=True)
 

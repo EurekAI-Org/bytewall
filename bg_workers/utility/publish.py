@@ -19,7 +19,7 @@ def publish_event(
     msg: str,
     file_meta: dict,
     status: Literal["success", "failed"] = "success",
-    logger: logging.Logger | None = None
+    logger: logging.Logger | None = None,
 ):
     safe_publish_event(
         redis_client=redis_client,

@@ -7,7 +7,6 @@
 import pathlib
 
 from clamav_client.clamd import ClamdNetworkSocket, CommunicationError
-
 from utility.exceptions import ClamAVUnavailableError
 
 

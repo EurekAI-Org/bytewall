@@ -10,11 +10,10 @@ from collections.abc import Sequence
 from typing import Literal
 
 import sqlalchemy
+from config import Settings
 from shared.db.tables import SanitizedFileTable, UploadedFileTable, UploadJobTable
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.orm import Session
-
-from config import Settings
 
 
 def update_record(

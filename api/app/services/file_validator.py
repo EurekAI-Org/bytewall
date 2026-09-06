@@ -219,7 +219,6 @@ class FileValidator:
 
         actual_mime_type = None
         try:
-
             # ************************************************
             # a. File Size check
             # ************************************************

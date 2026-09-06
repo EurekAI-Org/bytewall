@@ -4,4 +4,4 @@
 # SPDX-License-Identifier: MIT
 #
 
-from .task_queues import TASK_QUEUES
+from .task_queues import TASK_QUEUES as TASK_QUEUES

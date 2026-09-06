@@ -6,6 +6,7 @@
 
 from shared.logger.logger import get_logger
 from sqlalchemy import text
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from app.config.config import Settings
@@ -45,5 +46,5 @@ async def connection_check():
         async with async_eng.connect() as conn:
             await conn.execute(text("SELECT 1"))
         logger.info(msg="✅ Successfully connected to the database!")
-    except Exception as e:
+    except SQLAlchemyError as e:
         logger.error(msg=f"❌ Error connecting to database: {e}")

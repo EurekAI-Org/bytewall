@@ -6,11 +6,10 @@
 
 from celery import Celery
 from celery.signals import task_failure, task_postrun, task_prerun, worker_process_init
+from config import Settings
 from kombu import Queue
 from shared.celery_queues.task_queues import TASK_QUEUES
 from shared.logger.logger import get_logger
-
-from config import Settings
 from utility.init_modules import init_modules
 
 celery_app = Celery(

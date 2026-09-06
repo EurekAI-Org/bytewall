@@ -8,10 +8,9 @@ import pathlib
 
 import yara
 from clamav_client.clamd import ClamdNetworkSocket
-from shared.logger.logger import get_logger
-
 from scanner.clamav_scanner import scan_clamav
 from scanner.yara_scanner import scan_yara
+from shared.logger.logger import get_logger
 from utility.typed_dicts import ScanMeta, ScanRes
 
 logger = get_logger("file.scan")

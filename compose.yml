@@ -1,4 +1,20 @@
 services:
+  migrate:
+    image: ${API_IMAGE_REGISTRY}
+    env_file:
+      - .env
+
+    command:
+      - alembic
+      - upgrade
+      - head
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    restart: "no"
+
   api:
     image: ${API_IMAGE_REGISTRY}
     env_file:
@@ -16,6 +32,9 @@ services:
       - "${API_PORT:-8080}:8080"
 
     depends_on:
+      migrate:
+        condition: service_completed_successfully
+
       postgres:
         condition: service_healthy
       redis:
@@ -53,6 +72,8 @@ services:
     mem_limit: ${DEFAULT_WORKERS_MEM_LIMIT:-2G}
 
     depends_on:
+      migrate:
+        condition: service_completed_successfully
       postgres:
         condition: service_healthy
       redis:
@@ -90,11 +111,15 @@ services:
     mem_limit: ${SCAN_WORKERS_MEM_LIMIT:-2G}
 
     depends_on:
+      migrate:
+        condition: service_completed_successfully
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
       rabbitmq:
+        condition: service_healthy
+      clamav:
         condition: service_healthy
 
   workers_beat:
@@ -127,6 +152,8 @@ services:
     mem_limit: ${BEAT_WORKERS_MEM_LIMIT:-2G}
 
     depends_on:
+      migrate:
+        condition: service_completed_successfully
       postgres:
         condition: service_healthy
       redis:
@@ -153,6 +180,8 @@ services:
     restart: unless-stopped
 
     depends_on:
+      migrate:
+        condition: service_completed_successfully
       postgres:
         condition: service_healthy
       redis:
@@ -229,6 +258,16 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  clamav:
+    image: clamav/clamav:stable
+
+    restart: unless-stopped
+
+    volumes:
+      - clamav_data:/var/lib/clamav
+
+    mem_limit: ${CLAMAV_MEM_LIMIT:-4G}
 
 volumes:
   postgres_data:
