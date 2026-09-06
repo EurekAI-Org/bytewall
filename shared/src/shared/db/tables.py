@@ -32,7 +32,6 @@ class UploadedFileTable(BaseTable):
             "scan_res IN ('pending', 'clean', 'suspicious', 'malicious', 'failed')",
             name="ck_uploaded_file_scan_res",
         ),
-        {"schema": "app"},
     )
 
     user_id: Mapped[uuid.UUID] = mapped_column(nullable=False, index=True)
@@ -56,11 +55,10 @@ class SanitizedFileTable(BaseTable):
     __tablename__ = "sanitized_files"
     __table_args__ = (
         UniqueConstraint("bucket", "key", name="uq_bucket_key_sanitized"),
-        {"schema": "app"},
     )
 
     uploaded_file_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("app.uploaded_files.id", ondelete="CASCADE"),
+        ForeignKey("uploaded_files.id", ondelete="CASCADE"),
         nullable=False,
         unique=True,
         index=True,
@@ -86,11 +84,10 @@ class UploadJobTable(BaseTable):
             name="ck_upload_job_stage",
         ),
         Index("ix_upload_jobs_retry", "status", "next_retry_at"),
-        {"schema": "app"},
     )
 
     uploaded_file_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("app.uploaded_files.id"), nullable=False, index=True, unique=True
+        ForeignKey("uploaded_files.id"), nullable=False, index=True, unique=True
     )
     celery_task_id: Mapped[str | None]
     status: Mapped[str] = mapped_column(

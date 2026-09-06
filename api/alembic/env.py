@@ -9,11 +9,12 @@ import sys
 from logging.config import fileConfig
 
 from alembic import context
-from sqlalchemy import engine_from_config, pool, text
+from sqlalchemy import engine_from_config, pool
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 
+import shared.db.tables  # noqa: F401
 from app.config.config import Settings
 from shared.db.models import Base
 
@@ -40,40 +41,6 @@ target_metadata = Base.metadata
 # ... etc.
 
 
-MANAGED_SCHEMAS = {"app"}
-
-
-def _obj_schema(obj):
-    if hasattr(obj, "schema"):
-        return obj.schema
-
-    table = getattr(obj, "table", None)
-    if table is not None:
-        return getattr(table, "schema", None)
-
-    return None
-
-
-def include_name(name, type_, parent_names):
-    """Prevents alembic from reflecting schemas we don't own"""
-    if type_ == "schema":
-        return name in MANAGED_SCHEMAS
-
-    return True
-
-
-def include_object(obj, name, type_, reflected, compare_to):
-    schema = _obj_schema(obj)
-
-    # Only manage objects that explicitly belongs to our MANAGED_SCHEMAS
-    if schema is not None:
-        return schema in MANAGED_SCHEMAS
-
-    # For schema-less objects (e.g. sequences tied to a managed table)
-    # let them through - include_name already blocks SCHEMAS that are not managed explicitly by us.
-    return True
-
-
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
 
@@ -92,9 +59,6 @@ def run_migrations_offline() -> None:
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
-        include_schemas=True,
-        include_name=include_name,
-        include_object=include_object,
     )
 
     with context.begin_transaction():
@@ -115,17 +79,10 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        connection.execute(text("CREATE SCHEMA IF NOT EXISTS app"))
-        connection.commit()
-
         context.configure(
             connection=connection,
             target_metadata=target_metadata,
             version_table="alembic_version_app",
-            version_table_schema="app",
-            include_schemas=True,
-            include_name=include_name,
-            include_object=include_object,
         )
 
         with context.begin_transaction():

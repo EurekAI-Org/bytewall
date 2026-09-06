@@ -190,7 +190,7 @@ services:
         condition: service_healthy
 
   postgres:
-    image: postgres:17
+    image: postgres:18
 
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-bytewall}
