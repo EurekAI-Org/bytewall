@@ -468,6 +468,30 @@ byteWall should be deployed behind appropriate authentication, authorization, TL
 
 ---
 
+# Research Basis
+
+byteWall was designed with reference to prior research on secure file upload handling, malicious upload detection, and sanitization in web applications.
+
+In particular, the project draws inspiration from:
+
+- **Pascal Wichmann, Alexander Groddeck, and Hannes Federrath (2022)**  
+  _FileUploadChecker: Detecting and Sanitizing Malicious File Uploads in Web Applications at the Request Level._  
+  Proceedings of the 17th International Conference on Availability, Reliability and Security (ARES 2022), ACM.  
+  DOI: [10.1145/3538969.3538999](https://doi.org/10.1145/3538969.3538999)
+
+  The paper presents FileUploadChecker, a server-side approach for detecting potentially malicious file uploads and rejecting or sanitizing unsafe content. Its treatment of uploaded files as a security boundary and its use of detection and sanitization influenced the design direction of byteWall.
+
+- **Karishma Pooj and Sonali Patil (2016)**  
+  _Understanding File Upload Security for Web Applications._  
+  International Journal of Engineering Trends and Technology, 42(7), 342–347.  
+  DOI: [10.14445/22315381/IJETT-V42P261](https://doi.org/10.14445/22315381/IJETT-V42P261)
+
+  This work discusses security risks associated with file uploads in web applications and the importance of validating and handling uploaded files defensively.
+
+byteWall is an independent implementation and is not affiliated with the authors or publishers of these works.
+
+---
+
 # License
 
 byteWall is released under the MIT License.
