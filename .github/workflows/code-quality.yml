@@ -1,0 +1,22 @@
+name: Code Quality Check
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@10
+
+      - name: Run Ruff
+        run: |
+          uvx ruff@0.16.6 check api bg_workers shared
+          uvx ruff@0.16.6 format --check api bg_workers shared
