@@ -9,7 +9,11 @@
 
 # Virtual environments
 **/.venv
-**/.env*
+**/.env
+**/.env.*
 **/*.bckp*
 **/alembic/versions/
 **/*.db
+
+# Only allow
+!**/.env.example
